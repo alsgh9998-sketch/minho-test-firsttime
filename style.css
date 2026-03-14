@@ -111,44 +111,18 @@ body {
 }
 
 #result {
-    font-size: 4rem;
+    font-size: 2.5rem;
     color: var(--secondary-color);
     margin-bottom: 1rem;
 }
 
 #result-description {
     font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-#character-info {
-    margin-top: 2rem;
-}
-
-#character-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid var(--secondary-color);
-}
-
-#character-name {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 1rem;
-    color: var(--secondary-color);
-}
-
-.image-source {
-    font-size: 0.8rem;
-    color: #a0a0a0;
-    margin-top: 1rem;
-}
-
-.image-source a {
-    color: #a0a0a0;
-    text-decoration: underline;
+    line-height: 1.8;
+    text-align: justify;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
 }
 
 .progress-bar {

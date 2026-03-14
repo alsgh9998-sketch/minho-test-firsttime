@@ -6,8 +6,6 @@ const questionEl = document.getElementById('question');
 const answersEl = document.getElementById('answers');
 const resultEl = document.getElementById('result');
 const resultDescriptionEl = document.getElementById('result-description');
-const characterImageEl = document.getElementById('character-image');
-const characterNameEl = document.getElementById('character-name');
 const progressBar = document.querySelector('.progress');
 
 const questions = [
@@ -54,22 +52,70 @@ const answerOptions = [
 ];
 
 const personalityTypes = {
-    ISTJ: { description: '연애에서도 현실적이고 책임감이 강한 당신. 안정적인 관계를 선호하며, 연인에게 헌신적인 모습을 보입니다.', character: '캡틴 아메리카', image: 'https://source.unsplash.com/random/200x200/?hero,leader' },
-    ISFJ: { description: '따뜻하고 다정한 마음으로 연인을 보살피는 당신. 연인의 감정을 세심하게 살피고, 안정적인 관계에서 행복을 느낍니다.', character: '샘와이즈 갬지', image: 'https://source.unsplash.com/random/200x200/?loyal,friend' },
-    INFJ: { description: '깊이 있고 의미 있는 관계를 추구하는 당신. 연인과 정신적인 교감을 중요하게 생각하며, 이상적인 사랑을 꿈꿉니다.', character: '엘사', image: 'https://source.unsplash.com/random/200x200/?queen,snow' },
-    INTJ: { description: '지적인 대화를 즐기며, 연인과 함께 성장하는 관계를 원하는 당신. 독립적이면서도 연인에게는 깊은 신뢰를 보입니다.', character: '타노스', image: 'https://source.unsplash.com/random/200x200/?villain,powerful' },
-    ISTP: { description: '자유롭고 즉흥적인 연애를 즐기는 당신. 연인과 함께 새로운 경험을 하는 것을 좋아하며, 구속받는 것을 싫어합니다.', character: '블랙 위도우', image: 'https://source.unsplash.com/random/200x200/?spy,assassin' },
-    ISFP: { description: '섬세하고 감성적인 당신. 연인에게 다정하고 따뜻한 모습을 보이며, 현재의 감정에 충실한 연애를 합니다.', character: '벨', image: 'https://source.unsplash.com/random/200x200/?princess,book' },
-    INFP: { description: '낭만적이고 이상적인 사랑을 꿈꾸는 당신. 연인과 깊은 유대감을 형성하고 싶어하며, 진실된 사랑을 중요하게 생각합니다.', character: '에리얼', image: 'https://source.unsplash.com/random/200x200/?mermaid,dreamer' },
-    INTP: { description: '지적인 호기심을 공유할 수 있는 연인을 찾는 당신. 솔직하고 논리적인 대화를 선호하며, 연인의 지적인 면에 매력을 느낍니다.', character: '셜록 홈즈', image: 'https://source.unsplash.com/random/200x200/?detective,mystery' },
-    ESTP: { description: '스릴 넘치고 활기찬 연애를 즐기는 당신. 연인과 함께 다양한 활동을 하는 것을 좋아하며, 지루한 것을 싫어합니다.', character: '토니 스타크', image: 'https://source.unsplash.com/random/200x200/?billionaire,hero' },
-    ESFP: { description: '재치 있고 사교적인 당신. 연인에게 즐거움을 선사하며, 함께하는 모든 순간을 특별하게 만들고 싶어합니다.', character: '지니', image: 'https://source.unsplash.com/random/200x200/?magic,lamp' },
-    ENFP: { description: '열정적이고 창의적인 당신. 연인에게 끊임없이 애정을 표현하고, 긍정적인 에너지를 불어넣어 줍니다.', character: '스파이더맨', image: 'https://source.unsplash.com/random/200x200/?superhero,web' },
-    ENTP: { description: '재치 있는 대화와 토론을 즐기는 당신. 연인과 지적인 자극을 주고받는 관계를 선호하며, 유머 감각이 뛰어납니다.', character: '조커', image: 'https://source.unsplash.com/random/200x200/?clown,villain' },
-    ESTJ: { description: '책임감이 강하고 계획적인 당신. 연인과의 관계를 안정적으로 이끌어가며, 신뢰를 중요하게 생각합니다.', character: '헤르미온느', image: 'https://source.unsplash.com/random/200x200/?student,magic' },
-    ESFJ: { description: '친절하고 사교적인 당신. 연인의 필요를 먼저 생각하고, 주변 사람들에게도 연인을 자랑하고 싶어합니다.', character: '신데렐라', image: 'https://source.unsplash.com/random/200x200/?princess,cinderella' },
-    ENFJ: { description: '따뜻한 마음으로 연인을 이끌어주는 당신. 연인의 성장을 돕고, 함께 더 나은 미래를 만들어가고 싶어합니다.', character: '모아나', image: 'https://source.unsplash.com/random/200x200/?voyager,ocean' },
-    ENTJ: { description: '목표 지향적이고 자신감 넘치는 당신. 연인과 함께 미래를 계획하고, 서로에게 최고의 파트너가 되기를 원합니다.', character: '닉 퓨리', image: 'https://source.unsplash.com/random/200x200/?director,agent' },
+    ISTJ: {
+        title: "현실적이고 책임감 있는 연애",
+        description: "당신은 연애에 있어 현실적이고 책임감이 강한 유형입니다. 안정적인 관계를 선호하며, 연인에게 헌신적인 모습을 보입니다. 말보다는 행동으로 사랑을 표현하는 편이며, 계획적인 데이트를 통해 안정감을 느낍니다."
+    },
+    ISFJ: {
+        title: "따뜻하고 다정한 연애",
+        description: "따뜻하고 다정한 마음으로 연인을 보살피는 당신. 연인의 감정을 세심하게 살피고, 안정적인 관계에서 행복을 느낍니다. 연인을 위해 헌신하는 것을 기쁨으로 여기며, 조용하고 편안한 데이트를 즐깁니다."
+    },
+    INFJ: {
+        title: "깊이 있고 의미 있는 연애",
+        description: "깊이 있고 의미 있는 관계를 추구하는 당신. 연인과 정신적인 교감을 중요하게 생각하며, 이상적인 사랑을 꿈꿉니다. 연인의 내면을 이해하고 지지해주며, 함께 성장하는 관계를 원합니다."
+    },
+    INTJ: {
+        title: "지적이고 독립적인 연애",
+        description: "지적인 대화를 즐기며, 연인과 함께 성장하는 관계를 원하는 당신. 독립적이면서도 연인에게는 깊은 신뢰를 보입니다. 논리적인 대화를 통해 서로를 알아가는 것을 즐기며, 감정 표현에는 다소 서툴 수 있습니다."
+    },
+    ISTP: {
+        title: "자유롭고 즉흥적인 연애",
+        description: "자유롭고 즉흥적인 연애를 즐기는 당신. 연인과 함께 새로운 경험을 하는 것을 좋아하며, 구속받는 것을 싫어합니다. 스릴 넘치는 활동이나 즉흥적인 여행을 통해 연인과 가까워지는 것을 즐깁니다."
+    },
+    ISFP: {
+        title: "섬세하고 감성적인 연애",
+        description: "섬세하고 감성적인 당신. 연인에게 다정하고 따뜻한 모습을 보이며, 현재의 감정에 충실한 연애를 합니다. 예술적인 활동이나 아름다운 풍경을 함께 즐기며, 감성적인 교감을 중요하게 생각합니다."
+    },
+    INFP: {
+        title: "낭만적이고 이상적인 연애",
+        description: "낭만적이고 이상적인 사랑을 꿈꾸는 당신. 연인과 깊은 유대감을 형성하고 싶어하며, 진실된 사랑을 중요하게 생각합니다. 영화나 소설 같은 사랑을 꿈꾸며, 연인에게 헌신적인 모습을 보입니다."
+    },
+    INTP: {
+        title: "솔직하고 논리적인 연애",
+        description: "지적인 호기심을 공유할 수 있는 연인을 찾는 당신. 솔직하고 논리적인 대화를 선호하며, 연인의 지적인 면에 매력을 느낍니다. 독특하고 창의적인 데이트를 즐기며, 서로의 아이디어를 공유하는 것을 좋아합니다."
+    },
+    ESTP: {
+        title: "스릴 넘치고 활기찬 연애",
+        description: "스릴 넘치고 활기찬 연애를 즐기는 당신. 연인과 함께 다양한 활동을 하는 것을 좋아하며, 지루한 것을 싫어합니다. 스포츠나 액티비티를 함께 즐기며, 에너지를 발산하는 데이트를 선호합니다."
+    },
+    ESFP: {
+        title: "재치 있고 사교적인 연애",
+        description: "재치 있고 사교적인 당신. 연인에게 즐거움을 선사하며, 함께하는 모든 순간을 특별하게 만들고 싶어합니다. 파티나 모임에 함께 참여하며, 사람들과 어울리는 것을 즐깁니다."
+    },
+    ENFP: {
+        title: "열정적이고 창의적인 연애",
+        description: "열정적이고 창의적인 당신. 연인에게 끊임없이 애정을 표현하고, 긍정적인 에너지를 불어넣어 줍니다. 새로운 아이디어를 함께 시도하고, 서로에게 영감을 주는 관계를 만들어갑니다."
+    },
+    ENTP: {
+        title: "재치 있고 유머러스한 연애",
+        description: "재치 있는 대화와 토론을 즐기는 당신. 연인과 지적인 자극을 주고받는 관계를 선호하며, 유머 감각이 뛰어납니다. 흥미로운 주제에 대해 이야기하며, 서로의 생각에 도전하는 것을 즐깁니다."
+    },
+    ESTJ: {
+        title: "안정적이고 계획적인 연애",
+        description: "책임감이 강하고 계획적인 당신. 연인과의 관계를 안정적으로 이끌어가며, 신뢰를 중요하게 생각합니다. 목표를 함께 세우고 달성하며, 서로에게 든든한 버팀목이 되어주는 관계를 원합니다."
+    },
+    ESFJ: {
+        title: "친절하고 사교적인 연애",
+        description: "친절하고 사교적인 당신. 연인의 필요를 먼저 생각하고, 주변 사람들에게도 연인을 자랑하고 싶어합니다. 따뜻하고 배려심 넘치는 모습으로 연인을 감동시키며, 안정적인 관계를 만들어갑니다."
+    },
+    ENFJ: {
+        title: "따뜻하고 이끌어주는 연애",
+        description: "따뜻한 마음으로 연인을 이끌어주는 당신. 연인의 성장을 돕고, 함께 더 나은 미래를 만들어가고 싶어합니다. 긍정적인 영향력을 통해 연인에게 영감을 주며, 의미 있는 관계를 만들어갑니다."
+    },
+    ENTJ: {
+        title: "목표 지향적이고 자신감 넘치는 연애",
+        description: "목표 지향적이고 자신감 넘치는 당신. 연인과 함께 미래를 계획하고, 서로에게 최고의 파트너가 되기를 원합니다. 서로의 성공을 응원하며, 함께 성장하고 발전하는 관계를 만들어갑니다."
+    }
 };
 
 let currentQuestionIndex = 0;
@@ -126,11 +172,8 @@ function showResult() {
 
     const personality = personalityTypes[result];
 
-    resultEl.textContent = result;
+    resultEl.textContent = personality.title;
     resultDescriptionEl.textContent = personality.description;
-    characterImageEl.src = personality.image;
-    characterImageEl.alt = personality.character;
-    characterNameEl.textContent = personality.character;
 }
 
 function updateProgress() {
