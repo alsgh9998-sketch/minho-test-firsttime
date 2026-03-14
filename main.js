@@ -7,91 +7,29 @@ const answersEl = document.getElementById('answers');
 const resultEl = document.getElementById('result');
 const resultDescriptionEl = document.getElementById('result-description');
 
+// 질문을 서술문으로 변경하고, 각 질문이 어떤 특성을 측정하는지 표시합니다.
 const questions = [
-    {
-        question: '파티에 갔을 때 당신은...',
-        answers: [
-            { text: '낯선 사람을 포함하여 많은 사람들과 교류합니다', type: 'E' },
-            { text: '알고 지내는 몇몇 사람들과 교류합니다', type: 'I' },
-        ],
-    },
-    {
-        question: '당신은 더...',
-        answers: [
-            { text: '현실적이기보다는 사색적입니다', type: 'S' },
-            { text: '사색적이기보다는 현실적입니다', type: 'N' },
-        ],
-    },
-    {
-        question: '당신은 더...',
-        answers: [
-            { text: '냉철하기보다는 다정합니다', type: 'F' },
-            { text: '다정하기보다는 냉철합니다', type: 'T' },
-        ],
-    },
-    {
-        question: '당신은 ...을 선호합니다',
-        answers: [
-            { text: '빠른 결정을 내리는 것', type: 'J' },
-            { text: '결정을 미루는 것', type: 'P' },
-        ],
-    },
-        {
-        question: '여러 사람들과 함께 있을 때 당신은...',
-        answers: [
-            { text: '말을 더 많이 하는 경향이 있습니다', type: 'E' },
-            { text: '더 많이 듣는 경향이 있습니다', type: 'I' },
-        ],
-    },
-    {
-        question: '당신은 ...에 더 관심이 있습니다',
-        answers: [
-            { text: '실제적인 것', type: 'S' },
-            { text: '가능성 있는 것', type: 'N' },
-        ],
-    },
-    {
-        question: '판단을 내릴 때 당신은 더 자주 ...에 의존합니다',
-        answers: [
-            { text: '당신의 마음', type: 'F' },
-            { text: '당신의 머리', type: 'T' },
-        ],
-    },
-    {
-        question: '당신은 ...에 더 편안함을 느낍니다',
-        answers: [
-            { text: '완성된 제품', type: 'J' },
-            { text: '진행 중인 작업', type: 'P' },
-        ],
-    },
-    {
-        question: '당신은...',
-        answers: [
-            { text: '알아가기 쉬운 사람입니다', type: 'E' },
-            { text: '알아가기 어려운 사람입니다', type: 'I' },
-        ],
-    },
-    {
-        question: '당신은 ...에 대해 이야기하는 것을 선호합니다',
-        answers: [
-            { text: '구체적인 것', type: 'S' },
-            { text: '개념적인 것', type: 'N' },
-        ],
-    },
-    {
-        question: '당신은 ...에 더 설득됩니다',
-        answers: [
-            { text: '감동적인 호소', type: 'F' },
-            { text: '논리적인 주장', type: 'T' },
-        ],
-    },
-    {
-        question: '당신은 ...을 선호합니다',
-        answers: [
-            { text: '정해지고 결정된 것', type: 'J' },
-            { text: '변화에 열려 있는 것', type: 'P' },
-        ],
-    },
+    { statement: '나는 파티에서 낯선 사람들과도 쉽게 어울린다.', trait: 'E' },
+    { statement: '나는 현실적인 문제 해결에 더 집중하는 편이다.', trait: 'S' },
+    { statement: '나는 결정을 내릴 때 감정적인 측면을 중요하게 생각한다.', trait: 'F' },
+    { statement: '나는 계획을 세우고 그에 따라 행동하는 것을 선호한다.', trait: 'J' },
+    { statement: '나는 대화할 때 주로 듣는 쪽이다.', trait: 'I' },
+    { statement: '나는 미래의 가능성과 추상적인 아이디어에 더 끌린다.', trait: 'N' },
+    { statement: '나는 논리적이고 객관적인 분석을 통해 결정을 내린다.', trait: 'T' },
+    { statement: '나는 즉흥적이고 유연하게 상황에 대처하는 것을 즐긴다.', trait: 'P' },
+    { statement: '나는 새로운 사람들을 만나는 것을 즐긴다.', trait: 'E' },
+    { statement: '나는 구체적인 사실과 경험에 대해 이야기하는 것을 좋아한다.', trait: 'S' },
+    { statement: '나는 다른 사람의 감정에 공감하고 그들의 입장을 고려하려 노력한다.', trait: 'F' },
+    { statement: '나는 일을 시작하기 전에 여러 가능성을 열어두는 편이다.', trait: 'P' }
+];
+
+// 5가지 선택지와 각 선택지에 대한 점수
+const answerOptions = [
+    { text: '매우 그렇지 않다', value: -2 },
+    { text: '그렇지 않다', value: -1 },
+    { text: '보통이다', value: 0 },
+    { text: '그렇다', value: 1 },
+    { text: '매우 그렇다', value: 2 },
 ];
 
 const personalityTypes = {
@@ -114,7 +52,8 @@ const personalityTypes = {
 };
 
 let currentQuestionIndex = 0;
-let answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+const opposites = { E: 'I', I: 'E', S: 'N', N: 'S', T: 'F', F: 'T', J: 'P', P: 'J' };
 
 startBtn.addEventListener('click', startTest);
 
@@ -126,19 +65,25 @@ function startTest() {
 
 function showQuestion() {
     const question = questions[currentQuestionIndex];
-    questionEl.textContent = question.question;
+    questionEl.textContent = question.statement;
     answersEl.innerHTML = '';
-    question.answers.forEach(answer => {
+
+    answerOptions.forEach(option => {
         const button = document.createElement('button');
         button.classList.add('answer-btn');
-        button.textContent = answer.text;
-        button.addEventListener('click', () => selectAnswer(answer.type));
+        button.textContent = option.text;
+        button.addEventListener('click', () => selectAnswer(question.trait, option.value));
         answersEl.appendChild(button);
     });
 }
 
-function selectAnswer(type) {
-    answers[type]++;
+function selectAnswer(trait, value) {
+    if (value > 0) {
+        scores[trait] += value;
+    } else if (value < 0) {
+        scores[opposites[trait]] += Math.abs(value);
+    }
+
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         showQuestion();
@@ -152,10 +97,10 @@ function showResult() {
     resultScreen.classList.add('active');
 
     let result = '';
-    result += answers.E > answers.I ? 'E' : 'I';
-    result += answers.S > answers.N ? 'S' : 'N';
-    result += answers.T > answers.F ? 'T' : 'F';
-    result += answers.J > answers.P ? 'J' : 'P';
+    result += scores.E > scores.I ? 'E' : 'I';
+    result += scores.S > scores.N ? 'S' : 'N';
+    result += scores.T > scores.F ? 'T' : 'F';
+    result += scores.J > scores.P ? 'J' : 'P';
 
     resultEl.textContent = result;
     resultDescriptionEl.textContent = personalityTypes[result];
