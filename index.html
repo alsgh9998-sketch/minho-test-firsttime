@@ -21,11 +21,23 @@
             <div id="answers"></div>
         </div>
         <div id="result-screen" class="screen">
-            <h2>당신의 연애 성격 유형은:</h2>
-            <h1 id="result"></h1>
-            <p id="result-description"></p>
+            <div class="result-container">
+                <div class="result-text">
+                    <h2>당신의 연애 성격 유형은:</h2>
+                    <h1 id="result"></h1>
+                    <p id="result-description"></p>
+                    <div id="good-match"></div>
+                    <div id="bad-match"></div>
+                </div>
+                <div class="result-chart">
+                    <h2>산출 근거</h2>
+                    <canvas id="score-chart"></canvas>
+                    <div id="score-values"></div>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
