@@ -6,24 +6,45 @@ const questionEl = document.getElementById('question');
 const answersEl = document.getElementById('answers');
 const resultEl = document.getElementById('result');
 const resultDescriptionEl = document.getElementById('result-description');
+const characterImageEl = document.getElementById('character-image');
+const characterNameEl = document.getElementById('character-name');
+const progressBar = document.querySelector('.progress');
 
-// 질문을 서술문으로 변경하고, 각 질문이 어떤 특성을 측정하는지 표시합니다.
 const questions = [
-    { statement: '나는 파티에서 낯선 사람들과도 쉽게 어울린다.', trait: 'E' },
-    { statement: '나는 현실적인 문제 해결에 더 집중하는 편이다.', trait: 'S' },
-    { statement: '나는 결정을 내릴 때 감정적인 측면을 중요하게 생각한다.', trait: 'F' },
-    { statement: '나는 계획을 세우고 그에 따라 행동하는 것을 선호한다.', trait: 'J' },
-    { statement: '나는 대화할 때 주로 듣는 쪽이다.', trait: 'I' },
-    { statement: '나는 미래의 가능성과 추상적인 아이디어에 더 끌린다.', trait: 'N' },
-    { statement: '나는 논리적이고 객관적인 분석을 통해 결정을 내린다.', trait: 'T' },
-    { statement: '나는 즉흥적이고 유연하게 상황에 대처하는 것을 즐긴다.', trait: 'P' },
-    { statement: '나는 새로운 사람들을 만나는 것을 즐긴다.', trait: 'E' },
-    { statement: '나는 구체적인 사실과 경험에 대해 이야기하는 것을 좋아한다.', trait: 'S' },
-    { statement: '나는 다른 사람의 감정에 공감하고 그들의 입장을 고려하려 노력한다.', trait: 'F' },
-    { statement: '나는 일을 시작하기 전에 여러 가능성을 열어두는 편이다.', trait: 'P' }
+    // E/I
+    { statement: '연인과 함께하는 사교 모임에 나가는 것을 즐긴다.', trait: 'E' },
+    { statement: '연인과 단둘이 보내는 시간이 더 소중하다.', trait: 'I' },
+    { statement: '힘든 일이 있을 때, 연인과 대화하며 풀고 싶다.', trait: 'E' },
+    { statement: '혼자만의 시간을 통해 재충전해야 연인에게 더 집중할 수 있다.', trait: 'I' },
+    { statement: '연인과 함께 새로운 사람들을 만나는 데 에너지를 얻는다.', trait: 'E' },
+    { statement: '갈등이 생겼을 때, 바로 대화하기보다 혼자 생각할 시간이 필요하다.', trait: 'I' },
+
+    // S/N
+    { statement: '연인과의 기념일은 구체적이고 실용적인 선물로 챙기고 싶다.', trait: 'S' },
+    { statement: '연인에게 상상력을 자극하는 로맨틱한 데이트를 계획해주고 싶다.', trait: 'N' },
+    { statement: '연인과의 대화에서 현실적인 문제 해결에 집중한다.', trait: 'S' },
+    { statement: '연인과 미래에 대한 가능성과 꿈에 대해 이야기하는 것을 즐긴다.', trait: 'N' },
+    { statement: '연인의 말을 있는 그대로 받아들인다.', trait: 'S' },
+    { statement: '연인의 말에 숨겨진 의미나 감정을 파악하려고 노력한다.', trait: 'N' },
+
+    // T/F
+    { statement: '연인이 힘들어할 때, 감정적인 위로보다 실질적인 해결책을 제시한다.', trait: 'T' },
+    { statement: '연인이 힘들어할 때, 먼저 그의 감정을 공감하고 위로해준다.', trait: 'F' },
+    { statement: '연인과의 갈등 상황에서 논리적으로 잘잘못을 따지는 편이다.', trait: 'T' },
+    { statement: '연인과의 관계에서 조화를 유지하는 것이 더 중요하다.', trait: 'F' },
+    { statement: '연인에게 객관적인 사실에 근거하여 조언한다.', trait: 'T' },
+    { statement: '연인의 기분을 상하게 할 수 있는 말은 피하는 편이다.', trait: 'F' },
+
+    // J/P
+    { statement: '연인과의 데이트는 미리 계획하고 예약하는 것을 선호한다.', trait: 'J' },
+    { statement: '연인과 즉흥적으로 떠나는 여행이나 데이트를 즐긴다.', trait: 'P' },
+    { statement: '연인과의 관계에서 예측 가능한 안정감을 중요하게 생각한다.', trait: 'J' },
+    { statement: '상황에 따라 유연하게 계획을 변경하는 것을 즐긴다.', trait: 'P' },
+    { statement: '연인과의 약속 시간과 계획을 철저하게 지키는 편이다.', trait: 'J' },
+    { statement: '정해진 계획 없이 연인과 자유롭게 시간을 보내는 것을 좋아한다.', trait: 'P' },
+    { statement: '나는 연인과의 관계에서 주도권을 갖는 편이다.', trait: 'J' }
 ];
 
-// 5가지 선택지와 각 선택지에 대한 점수
 const answerOptions = [
     { text: '매우 그렇지 않다', value: -2 },
     { text: '그렇지 않다', value: -1 },
@@ -33,22 +54,22 @@ const answerOptions = [
 ];
 
 const personalityTypes = {
-    ISTJ: '청렴결백한 논리주의자: 내향적이고 현실적이며, 충실하고 질서정然하며 전통을 중시하는 경향이 있습니다.',
-    ISFJ: '용감한 수호자: 따뜻한 마음과 헌신적인 태도로, 자신이 아끼는 사람들을 항상 보호할 준비가 되어 있습니다.',
-    INFJ: '선의의 옹호자: 조용하고 신비로우면서도, 매우 영감을 주고 지칠 줄 모르는 이상주의자입니다.',
-    INTJ: '용의주도한 전략가: 상상력이 풍부하고 전략적인 사상가로, 모든 것에 대한 계획을 가지고 있습니다.',
-    ISTP: '만능 재주꾼: 대담하고 현실적인 실험가로, 모든 종류의 도구에 능숙합니다.',
-    ISFP: '호기심 많은 예술가: 유연하고 매력적이며, 항상 새로운 것을 탐험하고 경험할 준비가 되어 있습니다.',
-    INFP: '열정적인 중재자: 시적이고 친절하며 이타적인 사람들로, 항상 좋은 명분을 돕고 싶어합니다.',
-    INTP: '논리적인 사색가: 지식에 대한 갈증이 끊이지 않는 혁신적인 발명가입니다.',
-    ESTP: '모험을 즐기는 사업가: 똑똑하고 활기차며 매우 통찰력 있는 사람들로, 벼랑 끝에서 사는 것을 진정으로 즐깁니다.',
-    ESFP: '자유로운 영혼의 연예인: 즉흥적이고 활기차며 열정적인 사람들 - 그들 주변의 삶은 결코 지루하지 않습니다.',
-    ENFP: '재기발랄한 활동가: 열정적이고 창의적이며 사교적인 자유로운 영혼으로, 항상 웃을 이유를 찾을 수 있습니다.',
-    ENTP: '뜨거운 논쟁을 즐기는 변론가: 지적 도전을 거부할 수 없는 똑똑하고 호기심 많은 사상가입니다.',
-    ESTJ: '엄격한 관리자: 뛰어난 관리자로, 사물이나 사람을 관리하는 데 있어 타의 추종을 불허합니다.',
-    ESFJ: '사교적인 외교관: 유난히 배려심이 많고 사교적이며 인기가 많은 사람들로, 항상 기꺼이 돕습니다.',
-    ENFJ: '정의로운 사회운동가: 카리스마 있고 영감을 주는 리더로, 청중을 매료시킬 수 있습니다.',
-    ENTJ: '대담한 통솔자: 대담하고 상상력이 풍부하며 의지가 강한 리더로, 항상 길을 찾거나 만들어냅니다.',
+    ISTJ: { description: '연애에서도 현실적이고 책임감이 강한 당신. 안정적인 관계를 선호하며, 연인에게 헌신적인 모습을 보입니다.', character: '캡틴 아메리카', image: 'https://source.unsplash.com/random/200x200/?captain-america' },
+    ISFJ: { description: '따뜻하고 다정한 마음으로 연인을 보살피는 당신. 연인의 감정을 세심하게 살피고, 안정적인 관계에서 행복을 느낍니다.', character: '샘와이즈 갬지', image: 'https://source.unsplash.com/random/200x200/?samwise-gamgee' },
+    INFJ: { description: '깊이 있고 의미 있는 관계를 추구하는 당신. 연인과 정신적인 교감을 중요하게 생각하며, 이상적인 사랑을 꿈꿉니다.', character: '엘사', image: 'https://source.unsplash.com/random/200x200/?elsa' },
+    INTJ: { description: '지적인 대화를 즐기며, 연인과 함께 성장하는 관계를 원하는 당신. 독립적이면서도 연인에게는 깊은 신뢰를 보입니다.', character: '타노스', image: 'https://source.unsplash.com/random/200x200/?thanos' },
+    ISTP: { description: '자유롭고 즉흥적인 연애를 즐기는 당신. 연인과 함께 새로운 경험을 하는 것을 좋아하며, 구속받는 것을 싫어합니다.', character: '블랙 위도우', image: 'https://source.unsplash.com/random/200x200/?black-widow' },
+    ISFP: { description: '섬세하고 감성적인 당신. 연인에게 다정하고 따뜻한 모습을 보이며, 현재의 감정에 충실한 연애를 합니다.', character: '벨', image: 'https://source.unsplash.com/random/200x200/?belle' },
+    INFP: { description: '낭만적이고 이상적인 사랑을 꿈꾸는 당신. 연인과 깊은 유대감을 형성하고 싶어하며, 진실된 사랑을 중요하게 생각합니다.', character: '에리얼', image: 'https://source.unsplash.com/random/200x200/?ariel' },
+    INTP: { description: '지적인 호기심을 공유할 수 있는 연인을 찾는 당신. 솔직하고 논리적인 대화를 선호하며, 연인의 지적인 면에 매력을 느낍니다.', character: '셜록 홈즈', image: 'https://source.unsplash.com/random/200x200/?sherlock-holmes' },
+    ESTP: { description: '스릴 넘치고 활기찬 연애를 즐기는 당신. 연인과 함께 다양한 활동을 하는 것을 좋아하며, 지루한 것을 싫어합니다.', character: '토니 스타크', image: 'https://source.unsplash.com/random/200x200/?tony-stark' },
+    ESFP: { description: '재치 있고 사교적인 당신. 연인에게 즐거움을 선사하며, 함께하는 모든 순간을 특별하게 만들고 싶어합니다.', character: '지니', image: 'https://source.unsplash.com/random/200x200/?genie' },
+    ENFP: { description: '열정적이고 창의적인 당신. 연인에게 끊임없이 애정을 표현하고, 긍정적인 에너지를 불어넣어 줍니다.', character: '스파이더맨', image: 'https://source.unsplash.com/random/200x200/?spiderman' },
+    ENTP: { description: '재치 있는 대화와 토론을 즐기는 당신. 연인과 지적인 자극을 주고받는 관계를 선호하며, 유머 감각이 뛰어납니다.', character: '조커', image: 'https://source.unsplash.com/random/200x200/?joker' },
+    ESTJ: { description: '책임감이 강하고 계획적인 당신. 연인과의 관계를 안정적으로 이끌어가며, 신뢰를 중요하게 생각합니다.', character: '헤르미온느', image: 'https://source.unsplash.com/random/200x200/?hermione' },
+    ESFJ: { description: '친절하고 사교적인 당신. 연인의 필요를 먼저 생각하고, 주변 사람들에게도 연인을 자랑하고 싶어합니다.', character: '신데렐라', image: 'https://source.unsplash.com/random/200x200/?cinderella' },
+    ENFJ: { description: '따뜻한 마음으로 연인을 이끌어주는 당신. 연인의 성장을 돕고, 함께 더 나은 미래를 만들어가고 싶어합니다.', character: '모아나', image: 'https://source.unsplash.com/random/200x200/?moana' },
+    ENTJ: { description: '목표 지향적이고 자신감 넘치는 당신. 연인과 함께 미래를 계획하고, 서로에게 최고의 파트너가 되기를 원합니다.', character: '닉 퓨리', image: 'https://source.unsplash.com/random/200x200/?nick-fury' },
 };
 
 let currentQuestionIndex = 0;
@@ -64,6 +85,7 @@ function startTest() {
 }
 
 function showQuestion() {
+    updateProgress();
     const question = questions[currentQuestionIndex];
     questionEl.textContent = question.statement;
     answersEl.innerHTML = '';
@@ -102,6 +124,16 @@ function showResult() {
     result += scores.T > scores.F ? 'T' : 'F';
     result += scores.J > scores.P ? 'J' : 'P';
 
+    const personality = personalityTypes[result];
+
     resultEl.textContent = result;
-    resultDescriptionEl.textContent = personalityTypes[result];
+    resultDescriptionEl.textContent = personality.description;
+    characterImageEl.src = personality.image;
+    characterImageEl.alt = personality.character;
+    characterNameEl.textContent = personality.character;
+}
+
+function updateProgress() {
+    const progressPercentage = (currentQuestionIndex / questions.length) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
 }

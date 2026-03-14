@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBTI 성격 유형 검사</title>
+    <title>연애 MBTI 성격 유형 검사</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div id="start-screen" class="screen active">
-            <h1>MBTI 성격 유형 검사</h1>
-            <p>당신의 성격 유형을 알아보세요.</p>
+            <h1>연애 MBTI 성격 유형 검사</h1>
+            <p>연인 관계에서 당신은 어떤 사람일까요?</p>
             <button id="start-btn">검사 시작</button>
         </div>
         <div id="question-screen" class="screen">
             <h2 id="question"></h2>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
             <div id="answers"></div>
         </div>
         <div id="result-screen" class="screen">
-            <h2>당신의 성격 유형은:</h2>
+            <h2>당신의 연애 성격 유형은:</h2>
             <h1 id="result"></h1>
             <p id="result-description"></p>
+            <div id="character-info">
+                <img id="character-image" src="" alt="캐릭터 이미지">
+                <p id="character-name"></p>
+            </div>
         </div>
     </div>
     <script src="main.js"></script>
