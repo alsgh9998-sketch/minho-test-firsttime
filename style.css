@@ -140,6 +140,17 @@ body {
     color: var(--secondary-color);
 }
 
+.image-source {
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    margin-top: 1rem;
+}
+
+.image-source a {
+    color: #a0a0a0;
+    text-decoration: underline;
+}
+
 .progress-bar {
     width: 100%;
     background-color: var(--card-bg);
