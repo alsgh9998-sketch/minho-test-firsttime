@@ -1,4 +1,5 @@
 const startBtn = document.getElementById('start-btn');
+const prevBtn = document.getElementById('prev-btn');
 const startScreen = document.getElementById('start-screen');
 const questionScreen = document.getElementById('question-screen');
 const resultScreen = document.getElementById('result-screen');
@@ -13,28 +14,28 @@ const badMatchEl = document.getElementById('bad-match');
 
 const questions = [
     // E/I
-    { statement: '연인과 함께하는 사교 모임에 나가는 것을 즐긴다.', trait: 'E' },
-    { statement: '연인과 단둘이 보내는 시간이 더 소중하다.', trait: 'I' },
-    { statement: '힘든 일이 있을 때, 연인과 대화하며 풀고 싶다.', trait: 'E' },
-    { statement: '혼자만의 시간을 통해 재충전해야 연인에게 더 집중할 수 있다.', trait: 'I' },
+    { statement: '나는 연인과 함께 있을 때, 다른 사람들과 어울리며 에너지를 얻는 편이다. (예: 커플 동반 모임, 파티)', trait: 'E' },
+    { statement: '나는 연인과 단둘이 있을 때 가장 편안하고, 깊은 유대감을 느낀다. (예: 조용한 카페에서의 대화, 집 데이트)', trait: 'I' },
+    { statement: '힘든 일이 생겼을 때, 연인에게 즉시 털어놓고 이야기하며 감정을 해소하고 싶다.', trait: 'E' },
+    { statement: '힘든 일이 생겼을 때, 먼저 혼자 생각할 시간을 갖고 감정을 정리한 후에 연인과 이야기하고 싶다.', trait: 'I' },
 
     // S/N
-    { statement: '연인과의 기념일은 구체적이고 실용적인 선물로 챙기고 싶다.', trait: 'S' },
-    { statement: '연인에게 상상력을 자극하는 로맨틱한 데이트를 계획해주고 싶다.', trait: 'N' },
-    { statement: '연인과의 대화에서 현실적인 문제 해결에 집중한다.', trait: 'S' },
-    { statement: '연인과 미래에 대한 가능성과 꿈에 대해 이야기하는 것을 즐긴다.', trait: 'N' },
+    { statement: '연인과의 기념일에 과거의 좋았던 기억을 떠올리게 하는, 의미 있는 선물을 준비하고 싶다. (예: 함께 갔던 여행지 사진 앨범)', trait: 'S' },
+    { statement: '연인과의 기념일에 우리의 미래를 상상하게 하는, 독창적이고 특별한 경험을 선물하고 싶다. (예: 함께 새로운 것을 배우는 원데이 클래스)', trait: 'N' },
+    { statement: '연인과 대화할 때, 눈에 보이는 현실적인 사실과 구체적인 경험에 대해 이야기하는 것을 선호한다.', trait: 'S' },
+    { statement: '연인과 대화할 때, 앞으로 일어날 가능성이나 다양한 아이디어, 미래에 대한 꿈에 대해 이야기하는 것을 즐긴다.', trait: 'N' },
 
     // T/F
-    { statement: '연인이 힘들어할 때, 감정적인 위로보다 실질적인 해결책을 제시한다.', trait: 'T' },
-    { statement: '연인이 힘들어할 때, 먼저 그의 감정을 공감하고 위로해준다.', trait: 'F' },
-    { statement: '연인과의 갈등 상황에서 논리적으로 잘잘못을 따지는 편이다.', trait: 'T' },
-    { statement: '연인과의 관계에서 조화를 유지하는 것이 더 중요하다.', trait: 'F' },
+    { statement: '연인이 현실적인 문제로 힘들어할 때, 문제의 원인을 분석하고 가장 효율적인 해결책을 찾아주는 것이 사랑이라고 생각한다.', trait: 'T' },
+    { statement: '연인이 감정적으로 힘들어할 때, 그의 감정을 충분히 공감해주고 따뜻하게 위로해주는 것이 우선이라고 생각한다.', trait: 'F' },
+    { statement: '연인과 갈등이 생겼을 때, 객관적인 사실에 근거하여 무엇이 옳고 그른지 명확하게 이야기하는 것이 관계 발전에 도움이 된다고 믿는다.', trait: 'T' },
+    { statement: '연인과 갈등이 생겼을 때, 상대방의 감정이 상하지 않도록 배려하며, 관계의 조화를 유지하는 것이 더 중요하다고 생각한다.', trait: 'F' },
 
     // J/P
-    { statement: '연인과의 데이트는 미리 계획하고 예약하는 것을 선호한다.', trait: 'J' },
-    { statement: '연인과 즉흥적으로 떠나는 여행이나 데이트를 즐긴다.', trait: 'P' },
-    { statement: '연인과의 관계에서 예측 가능한 안정감을 중요하게 생각한다.', trait: 'J' },
-    { statement: '상황에 따라 유연하게 계획을 변경하는 것을 즐긴다.', trait: 'P' }
+    { statement: '연인과의 데이트는 사전에 맛집, 카페, 동선까지 완벽하게 계획해야 마음이 편안하다.', trait: 'J' },
+    { statement: '연인과의 데이트는 그날의 기분이나 상황에 따라 즉흥적으로 결정하는 것이 더 즐겁고 흥미롭다.', trait: 'P' },
+    { statement: '연인과의 관계에서 미리 정해진 규칙이나 계획을 통해 안정감을 느끼고, 예측 가능한 미래를 함께 그려나가는 것을 중요하게 생각한다.', trait: 'J' },
+    { statement: '연인과의 관계에서 정해진 틀에 얽매이기보다는, 상황에 따라 유연하게 대처하며 자유롭게 새로운 가능성을 탐색하는 것을 즐긴다.', trait: 'P' }
 ];
 
 const answerOptions = [
@@ -225,20 +226,32 @@ const personalityTypes = {
 };
 
 let currentQuestionIndex = 0;
-let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+let userAnswers = [];
 
 startBtn.addEventListener('click', startTest);
+prevBtn.addEventListener('click', goBack);
 
 function startTest() {
     currentQuestionIndex = 0;
-    scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+    userAnswers = [];
     startScreen.classList.remove('active');
     questionScreen.classList.add('active');
+    resultScreen.classList.remove('active');
     showQuestion();
+}
+
+function goBack() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        userAnswers.pop();
+        showQuestion();
+    }
 }
 
 function showQuestion() {
     updateProgress();
+    prevBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'block';
+
     const question = questions[currentQuestionIndex];
     questionEl.textContent = question.statement;
     answersEl.innerHTML = '';
@@ -253,7 +266,7 @@ function showQuestion() {
 }
 
 function selectAnswer(trait, value) {
-    scores[trait] += value;
+    userAnswers.push({ trait, value });
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         showQuestion();
@@ -266,14 +279,16 @@ function showResult() {
     questionScreen.classList.remove('active');
     resultScreen.classList.add('active');
 
+    let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+    userAnswers.forEach(answer => {
+        scores[answer.trait] += answer.value;
+    });
+
     const traitPairs = [['E', 'I'], ['S', 'N'], ['T', 'F'], ['J', 'P']];
     const percentages = {};
     
     traitPairs.forEach(pair => {
         const [trait1, trait2] = pair;
-        // There are 2 questions per trait, and the max value for each is 4.
-        // So the max score for a single trait (e.g., E) is 2 * 4 = 8.
-        // The total max score for a pair (e.g., E + I) is 16.
         const totalScore = scores[trait1] + scores[trait2];
         if (totalScore === 0) {
             percentages[trait1] = 50;
@@ -306,12 +321,9 @@ function displayScoreValues(percentages) {
         T: '사고', F: '감정', J: '판단', P: '인식'
     };
 
-    // Helper function to create a single score bar pair
     const createScoreBar = (trait1, trait2) => {
         const percent1 = percentages[trait1];
         const percent2 = percentages[trait2];
-
-        // Only show percentage if bar is wide enough
         const label1 = percent1 > 15 ? `${percent1}%` : '';
         const label2 = percent2 > 15 ? `${percent2}%` : '';
 
@@ -327,14 +339,12 @@ function displayScoreValues(percentages) {
         `;
     };
 
-    let html = `
+    scoreValuesEl.innerHTML = `
         ${createScoreBar('E', 'I')}
         ${createScoreBar('S', 'N')}
         ${createScoreBar('T', 'F')}
         ${createScoreBar('J', 'P')}
     `;
-
-    scoreValuesEl.innerHTML = html;
 }
 
 function updateProgress() {
